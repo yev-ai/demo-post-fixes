@@ -1,16 +1,15 @@
 'use client';
-
-import { BroadcastButton } from '@/components/broadcast-button';
-import { TextInput } from '@/components/text-input';
-import { useToolsFunctions } from '@/hooks/use-tools';
-import useWebRTCAudioSession from '@/hooks/use-webrtc';
-import { tools } from '@/lib/tools';
+import { BroadcastButton } from '@components/broadcast-button';
+import { CommandTerminal } from '@components/command-terminal';
+import { MessageControls } from '@components/message-controls';
+import { TextInput } from '@components/text-input';
+import { useToolsFunctions } from '@hooks/use-tools';
+import { TranslationProvider, useTranslation } from '@hooks/use-translation';
+import useWebRTCAudioSession from '@hooks/use-webrtc';
+import { tools } from '@lib/tools';
+import styles from '@styles/page.module.css';
 import { useSession } from 'next-auth/react';
 import React, { useEffect } from 'react';
-import { CommandTerminal } from './components/command-terminal';
-import { MessageControls } from './components/message-controls';
-import { TranslationProvider, useTranslation } from './hooks/use-translation';
-import styles from './page.module.css';
 const ConversationWithTranslation: React.FC = () => {
   const { status, isSessionActive, registerFunction, handleStartStopClick, msgs, conversation, sendTextMessage } = useWebRTCAudioSession(
     'ash',

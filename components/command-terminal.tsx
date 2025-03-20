@@ -1,8 +1,8 @@
 /* eslint-disable */
 'use client';
 
-import { useStreamCommand } from '@/hooks/use-stream';
-import { useTranslation } from '@/hooks/use-translation';
+import { useStreamCommand } from '@hooks/use-stream';
+import { useTranslation } from '@hooks/use-translation';
 import { StreamMessage } from '@types';
 import { useMemo, useState } from 'react';
 

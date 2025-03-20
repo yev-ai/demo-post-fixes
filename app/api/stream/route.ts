@@ -1,4 +1,4 @@
-import { auth } from '@/lib/auth';
+// import { auth } from '@/lib/auth';
 import { StreamMessage } from '@types';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -108,10 +108,10 @@ async function executeCommandWithStreaming(
  */
 export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
-    const session = await auth();
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+    // const session = await auth();
+    // if (!session) {
+    //   return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    // }
 
     const body = await req.json();
     const { goal, originalMessage } = body;
@@ -144,7 +144,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             }
           },
           // Use nullish coalescing for safer fallbacks
-          session?.user?.email ?? process.env.BILL_API_CALLS_TO ?? 'default',
+          // session?.user?.email ?? process.env.BILL_API_CALLS_TO ?? 'default',
           originalMessage
         );
 

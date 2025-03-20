@@ -1,9 +1,9 @@
 'use client';
 
-import ThreeDotsWave from '@/components/ui/three-dots-wave';
-import { cn } from '@/lib/utils';
+import ThreeDotsWave from '@components/ui/three-dots-wave';
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
 import { Conversation } from '@types';
+import { cn } from '@utils/cn';
 import { AnimatePresence, motion } from 'framer-motion';
 import * as React from 'react';
 

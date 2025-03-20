@@ -1,15 +1,15 @@
 /* eslint-disable */
-import { auth } from '@/lib/auth';
+// import { auth } from '@/lib/auth';
 import { NextResponse } from 'next/server';
 
 export async function POST() {
-  const session = await auth();
+  // const session = await auth();
   try {
-    console.log(`Session/Route access`, session);
+    // console.log(`Session/Route access`, session);
 
-    if (!session) {
-      return new Response('Unauthorized', { status: 401 });
-    }
+    // if (!session) {
+    //   return new Response('Unauthorized', { status: 401 });
+    // }
     if (!process.env.OPENAI_API_KEY) {
       throw new Error(`OPENAI_API_KEY is not set`);
     }

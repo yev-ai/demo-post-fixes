@@ -1,5 +1,5 @@
-import { Button } from '@/components/ui/button';
-import { useLanguagePair } from '@/hooks/use-language';
+import { Button } from '@components/ui/button';
+import { useLanguagePair } from '@hooks/use-language';
 
 interface BroadcastButtonProps {
   isSessionActive: boolean;
