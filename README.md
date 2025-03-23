@@ -7,15 +7,11 @@
 
 - Relearn react and fix this project to best practices
 
+  - NextJS is fairly prescriptive; use standard stuff like:
+    - node, react, react router, express
   - interview was an example of code NOT to write lol
   - need to relearn basically ...everything
   - focus on state management like redux
-
-- Relearn NextJS. been doing backend only for too long
-
-  - middleware. need to get good at this again.
-  - partial page rendering and 'use cache' mostly.
-  - server actions seem useful instead of API routes.
 
 - Swap to Supabase for Auth, PGV, and Realtime.
 - Swap to Anthropic context protocol
