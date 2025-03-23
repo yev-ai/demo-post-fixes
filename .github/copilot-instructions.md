@@ -1,9 +1,20 @@
 # Tech Stack
 
-- Typescript 5.8+
-- React 19+
+- TypeScript v5.8
+- Bun v1.2.5
+- ShadCN UI
+- TailwindCSS 4
+- React 19
+- NextJS 15.3 Canary with:
+  - Partial page rendering (PPR)
+  - React Compiler (RC) for optimized bundle size
+  - Optimized CSS output
+  - Route handlers for various connection types:
+    - `/api/` - RESTful API endpoints
+    - `/api/stream` - Server-Sent Events
+    - `/api/ws` - WebSocket connections
 
-# TypeScript Specifics
+# TypeScript Instructions
 
 - Access objects safely, properly using "?." and "??". Sparingly use "!" when appropriate.
 - Use modern TypeScript 5+ features like "satisfies", "infer", "asserts", "as const", etc.

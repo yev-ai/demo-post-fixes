@@ -1,24 +1,56 @@
-# Purpose
+# NextJS Starter Template
 
-- Complete original project goal feature parity.
-- Lots of cleanup, refactoring, and optimizations.
+This is for production builds served via a tunnel or proxy.
 
-# TODO
+- JS Bundle Size is 109KB
+- Standalone artifact size is 74MB
+- Overall Docker image size is 163MB
 
-- Relearn react and fix this project to best practices
+## Tech Stack
 
-  - NextJS is fairly prescriptive; use standard stuff like:
-    - node, react, react router, express
-  - interview was an example of code NOT to write lol
-  - need to relearn basically ...everything
-  - focus on state management like redux
+- TypeScript v5.8
+- Bun v1.2.5
+- ShadCN UI
+- TailwindCSS 4
+- React 19
+- NextJS 15.3 Canary with:
+  - Partial page rendering (PPR)
+  - React Compiler (RC) for optimized bundle size
+  - Optimized CSS output
+  - Route handlers for various connection types:
+    - `/api/*` - RESTful API endpoints
+    - `/api/stream/*` - Server-Sent events
+    - `/api/ws/*` - WebSocket connections
+    - `/api/healthcheck` - Included by default
+- System fronts to minimize client download size
 
-- Swap to Supabase for Auth, PGV, and Realtime.
-- Swap to Anthropic context protocol
-- client vs server tool usage because WebRTC
-- Go from there
+## Project Structure
 
-# Done
+- `app/` - NextJS app router pages and layouts
+- `components/` - Reusable UI components
+- `.cicd/` - Build and deployment automation
+- `public/` - Static assets
 
-- Swap infra so we don't deploy over the original repo
-  - Changed deployment branch to /prod
+## Development
+
+```bash
+# Recommended alias
+alias br="bun run"
+
+# Set up dependencies
+bun install
+
+# Run development server
+br dev
+
+# Add ShadCN UI components
+br add:ui [COMPONENT_NAMES]
+
+# Run production server
+br build
+br start
+
+# Run production in docker
+br docker:build
+br docker:start
+```
