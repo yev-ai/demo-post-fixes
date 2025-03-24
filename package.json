@@ -8,6 +8,10 @@
     "dev": "bun --bun next dev --turbo",
     "docker:build": "./.cicd/build-docker.sh",
     "docker:start": "docker run -p 3000:3000 nextjs-15-demo",
+    "services:up": "docker compose -f .cicd/docker-compose.yml up -d",
+    "services:down": "docker compose -f .cicd/docker-compose.yml down",
+    "services:logs": "docker compose -f .cicd/docker-compose.yml logs -f db",
+    "services:clean": "docker compose -f .cicd/docker-compose.yml down -v",
     "lint": "bun --bun next lint",
     "start": "cd .next/standalone && bun server.js"
   },

@@ -1,4 +1,4 @@
-FROM oven/bun:1.2.5 AS BUILDER
+FROM oven/bun:1.2.5 AS builder
 
 WORKDIR /app
 
@@ -16,9 +16,9 @@ WORKDIR /app
 ENV HOSTNAME=0.0.0.0 \
     NODE_ENV=production
 
-COPY --from=BUILDER /app/.next/standalone ./
-COPY --from=BUILDER /app/.next/static ./.next/static
-COPY --from=BUILDER /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/public ./public
 
 EXPOSE ${PORT}
 
