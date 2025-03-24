@@ -1,3 +1,4 @@
+import { NextResponse } from "next/server";
 import os from "os";
 
 export async function GET() {
@@ -13,8 +14,7 @@ export async function GET() {
     },
   };
 
-  return new Response(JSON.stringify(response), {
+  return NextResponse.json(response, {
     status: 200,
-    headers: { "Content-Type": "application/json" },
   });
 }

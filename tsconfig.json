@@ -21,9 +21,11 @@
       }
     ],
     "paths": {
-      "@/*": ["./app/*"],
-      "@shad/*": ["./components/_shadcn/*"],
-      "@ui/*": ["./components/*"]
+      "@/*": ["./*"],
+      "@components/*": ["./components/*"],
+      "@ui/*": ["./components/*"],
+      "@ui-base/*": ["./components/ui/*"],
+      "@lib/*": ["./lib/*"]
     },
     "target": "esnext"
   },

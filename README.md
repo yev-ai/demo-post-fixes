@@ -2,27 +2,39 @@
 
 This is for production builds served via a tunnel or proxy.
 
-- JS Bundle Size is 109KB
-- Standalone artifact size is 74MB
-- Overall Docker image size is 163MB
+- First load bundle size is 122kB
+- Standalone artifact size is 91MB
+- Overall Docker image size is 180MB
 
 ## Tech Stack
 
-- TypeScript v5.8
-- Bun v1.2.5
+- TypeScript 5.8
+- Bun 1.2.5 because:
+  - As of January 2025, [it should be your default](https://bun.sh/blog/bun-v1.2)
+  - S3 API is 350-700%+ faster than Node + NPM
+    - We'll use this heavily in downstream projects
+  - Many other things are 150%+ faster than Node
+- React 19
 - ShadCN UI
 - TailwindCSS 4
-- React 19
 - NextJS 15.3 Canary with:
-  - Partial page rendering (PPR)
-  - React Compiler (RC) for optimized bundle size
-  - Optimized CSS output
-  - Route handlers for various connection types:
+  - Route configuration (next.config.ts) for:
     - `/api/*` - RESTful API endpoints
     - `/api/stream/*` - Server-Sent events
     - `/api/ws/*` - WebSocket connections
     - `/api/healthcheck` - Included by default
-- System fronts to minimize client download size
+  - React Compiler optimized for bundle size
+  - Partial page rendering
+  - Optimized CSS output
+- NextAuth 5.0 Beta with:
+  - Configured Prisma adapter
+  - Configured email provder
+  - Email provider allow mask
+  - Login also works as signup
+- Prisma 6.5 with:
+  - Configured PostgreSQL
+  - Optimized binaries
+  - NextAuth schema
 
 ## Project Structure
 
@@ -31,26 +43,48 @@ This is for production builds served via a tunnel or proxy.
 - `.cicd/` - Build and deployment automation
 - `public/` - Static assets
 
-## Development
+## Setup
 
 ```bash
 # Recommended alias
 alias br="bun run"
 
-# Set up dependencies
+# Install dependencies
 bun install
 
-# Run development server
+# Generate secure NextAuth secret
+bunx auth secret
+
+# Create prisma client
+br prisma:generate
+
+# Start supporting services
+br services:up
+
+# Apply prisma migrations
+br prisma:apply
+```
+
+## Development
+
+```bash
+
+# Run dev on host
 br dev
 
-# Add ShadCN UI components
-br add:ui [COMPONENT_NAMES]
-
-# Run production server
+# Run production on host
 br build
 br start
 
 # Run production in docker
-br docker:build
-br docker:start
+br build:docker
+br start:docker
+
+# Add ShadCN UI components
+br add:ui COMPONENT_NAMES
+
+# Update prisma schema
+br prisma:generate
+br prisma:apply
+
 ```

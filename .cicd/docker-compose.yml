@@ -6,9 +6,16 @@ services:
       POSTGRES_USER: UNSAFE_LOCAL_USER
       POSTGRES_PASSWORD: UNSAFE_LOCAL_PASSWORD
       POSTGRES_DB: demo
+      # Do not interfere with existing PostgreSQL containers.
+      PGDATA: /var/lib/postgresql-demo/data/pgdata
     ports:
       - "0.0.0.0:5432:5432"
     volumes:
-      - pgdata:/var/lib/demo/data
+      - pgdata:/var/lib/postgresql-demo/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U UNSAFE_LOCAL_USER -d demo"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 volumes:
   pgdata:

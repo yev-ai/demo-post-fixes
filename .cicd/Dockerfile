@@ -7,7 +7,19 @@ RUN bun install --frozen-lockfile
 
 COPY . .
 
-RUN NEXT_TELEMETRY_DISABLED=1 NEXT_PRIVATE_STANDALONE=true NEXT_DISABLE_SOURCEMAPS=true bun --bun next build
+RUN bun run prisma:generate
+
+# ARG + ENV variables you want passed into the build from .env.docker
+
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV NEXT_PRIVATE_STANDALONE=true
+ENV NEXT_DISABLE_SOURCEMAPS=true
+
+
+RUN  bun --bun next build
+
+# This saves 20MB by purging the binary for the build container, leaving only our run container one.
+RUN rm ./.next/standalone/node_modules/.prisma/client/libquery_engine-debian-openssl-1.1.x.so.node
 
 FROM oven/bun:1.2.5-alpine
 
