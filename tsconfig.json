@@ -23,9 +23,11 @@
     "paths": {
       "@/*": ["./*"],
       "@components/*": ["./components/*"],
-      "@ui/*": ["./components/*"],
       "@ui-base/*": ["./components/ui/*"],
-      "@lib/*": ["./lib/*"]
+      "@ui/*": ["./components/*"],
+      "@providers": ["./providers/index.ts"],
+      "@hooks": ["./hooks/index.ts"],
+      "@types": ["./types/index.ts"]
     },
     "target": "esnext"
   },

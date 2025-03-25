@@ -70,4 +70,18 @@ const nextAuthConfig = {
     : {},
 } satisfies NextAuthConfig;
 
+/**
+ * Exports authentication utilities from NextAuth.js.
+ *
+ * @remarks
+ * This is the main authentication export that provides access to NextAuth.js functionality.
+ *
+ * @exports
+ * @property {object} handlers - API route handlers for NextAuth.js authentication
+ * @property {Function} auth - Authentication function to protect routes
+ * @property {Function} signIn - Function to programmatically sign users in
+ * @property {Function} signOut - Function to programmatically sign users out
+ *
+ * @see {@link https://next-auth.js.org/} for more information on NextAuth.js
+ */
 export const { handlers, auth, signIn, signOut } = NextAuth(nextAuthConfig);

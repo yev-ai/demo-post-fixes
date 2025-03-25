@@ -2,9 +2,9 @@
 
 This is for production builds served via a tunnel or proxy.
 
-- First load bundle size is 122kB
-- Standalone artifact size is 91MB
-- Overall Docker image size is 180MB
+- First load bundle size is 140kB
+- Standalone artifact size is 85MB
+- Overall Docker image size is 175MB
 
 ## Tech Stack
 
@@ -15,8 +15,10 @@ This is for production builds served via a tunnel or proxy.
     - We'll use this heavily in downstream projects
   - Many other things are 150%+ faster than Node
 - React 19
-- ShadCN UI
-- TailwindCSS 4
+- ShadCN UI with:
+  - TailwindCSS 4
+  - Theme Switcher
+  - Localization
 - NextJS 15.3 Canary with:
   - Route configuration (next.config.ts) for:
     - `/api/*` - RESTful API endpoints

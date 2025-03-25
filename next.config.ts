@@ -1,24 +1,28 @@
-// import BundleAnalyzer from "@next/bundle-analyzer";
+import BundleAnalyzer from "@next/bundle-analyzer";
 import { type NextConfig } from "next";
 
-// const performAnalysis = process.env.ANALYZE_BUNDLE === "1";
+const performAnalysis = process.env.ANALYZE_BUNDLE === "1";
 
-// const withBundleAnalyzer = BundleAnalyzer({
-//   enabled: performAnalysis,
-// });
+const withBundleAnalyzer = BundleAnalyzer({
+  enabled: performAnalysis,
+  openAnalyzer: performAnalysis,
+});
 
 const nextConfig = {
   reactStrictMode: true,
   output: "standalone",
   experimental: {
-    ppr: "incremental",
+    // ppr: "incremental", <- This results in a bigger initial page load for now.
+    cssChunking: true,
     optimizeCss: true,
     optimizeServerReact: true,
-    reactCompiler: true,
+    externalDir: true,
+    esmExternals: true,
+    // reactCompiler: true, <- This results in a bigger initial page load for now.
     typedEnv: true,
-    // typedRoutes: true,
-    parallelServerCompiles: true,
-    parallelServerBuildTraces: true,
+    parallelServerCompiles: !performAnalysis,
+    parallelServerBuildTraces: !performAnalysis,
+    optimizePackageImports: ["react", "@radix-ui/react-select"],
     useCache: true,
   },
   compress: true,
@@ -76,4 +80,4 @@ const nextConfig = {
   },
 } satisfies NextConfig;
 
-export default nextConfig;
+export default performAnalysis ? withBundleAnalyzer(nextConfig) : nextConfig;

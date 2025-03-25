@@ -1,14 +1,13 @@
-import { AuthButton } from "@ui/AuthButton";
+import { AuthButton } from "@/components/auth-button";
+import { LanguageSelector } from "@/components/language-selector";
+import { ThemeSwitcher } from "@/components/theme-switcher";
 
-export default function Home() {
+export default async function Index() {
   return (
-    <main className="flex min-h-screen items-center justify-center">
-      <div className="flex flex-col items-center">
-        <div>NextAuth Button</div>
-        <div>
-          <AuthButton />
-        </div>
-      </div>
+    <main className="flex min-h-screen gap-2 items-center justify-center">
+      <LanguageSelector />
+      <ThemeSwitcher />
+      <AuthButton />
     </main>
   );
 }
