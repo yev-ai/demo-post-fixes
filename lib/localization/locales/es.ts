@@ -1,10 +1,12 @@
-import { createLocale } from "..";
+import { LocaleData } from "@/types";
+import { es as translationNames } from "../languages";
 
-export const es = createLocale("es", {
+export const es: LocaleData = {
   general: {
     languageSwitchPending: "ES Ld",
   },
-  auth: {
+  translationNames,
+  authButton: {
     login: "ES Login",
     logout: "ES Logout",
   },
@@ -12,4 +14,4 @@ export const es = createLocale("es", {
     welcome: "ES Welcome",
     pleaseLogin: "ES Log in to use the app",
   },
-});
+};

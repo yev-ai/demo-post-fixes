@@ -1,12 +1,11 @@
 "use client";
 
 import type React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 
-import { getPersistor } from "@/lib/redux/store";
-import { useStore } from "@hooks";
+import { getPersistor, initializeStore } from "@/lib/redux/store";
 import type { RootState } from "@types";
 
 export const ReduxProvider = function ReduxProvider({
@@ -16,7 +15,7 @@ export const ReduxProvider = function ReduxProvider({
   children: React.ReactNode;
   initialState?: Partial<RootState>;
 }) {
-  const store = useStore(initialState as RootState);
+  const store = useMemo(() => initializeStore(initialState), [initialState]);
   const persistor = getPersistor();
 
   const [isClient, setIsClient] = useState(false);

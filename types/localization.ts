@@ -1,16 +1,19 @@
+import type { LocaleCode } from "./ui-state";
+
 /**
  * Type definition for application-wide localization strings.
  * This type structure organizes all translatable text content used throughout the application.
  */
-export type LocaleType = {
+// This will never change at runtime so we don't need typeguards.
+export type LocaleData = {
   general: {
     languageSwitchPending: string;
   };
-  language: {
+  translationNames: {
     englishName: string;
     nativeName: string;
   };
-  auth: {
+  authButton: {
     login: string;
     logout: string;
   };
@@ -24,9 +27,7 @@ export type LocaleValue = string | { [key: string]: LocaleValue };
 
 export type LocaleDetails = {
   languageCode: LocaleCode;
-} & LocaleType["language"];
-
-export type LocaleCode = "en" | "es";
+} & LocaleData["translationNames"];
 
 export type LocalizationContext = {
   /** Translates a key to the current locale's value */

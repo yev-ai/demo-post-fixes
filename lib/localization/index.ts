@@ -1,20 +1,25 @@
-import { LocaleType } from "@types";
-import { ISO_639_1_CODES } from "./languages";
-/**
- * Enhances a partial language config with metadata derived from the language key
- *
- * @param key - ISO 639-1 language code (e.g., 'en', 'es')
- * @param config - Base configuration missing englishName and nativeName
- * @returns Complete language configuration with added metadata
- */
-export const createLocale = (
-  key: keyof typeof ISO_639_1_CODES,
-  config: Omit<LocaleType, "language">
-): LocaleType => {
-  return {
-    ...config,
-    language: {
-      ...ISO_639_1_CODES[key],
-    },
-  };
+import type { LocaleDetails } from "@types";
+import { validLocaleCodes } from "@types";
+
+import { en, es } from "./languages";
+
+const localeData = {
+  en,
+  es,
 };
+
+validLocaleCodes.forEach((code) => {
+  if (!(code in localeData)) {
+    throw new Error(
+      `Missing import for language: ${code}. Update your imports to include this language.`
+    );
+  }
+});
+
+export const AVAILABLE_LOCALES: LocaleDetails[] = validLocaleCodes.map(
+  (code) => ({
+    languageCode: code,
+    englishName: localeData[code].englishName,
+    nativeName: localeData[code].nativeName,
+  })
+);

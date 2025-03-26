@@ -67,8 +67,8 @@ export const makeStore = (preloadedState = {}) => {
   return { store, persistor };
 };
 
-export type AppStore = ReturnType<typeof makeStore>["store"];
-export type AppPersistor = Persistor;
+type AppStore = ReturnType<typeof makeStore>["store"];
+type AppPersistor = Persistor;
 export type RootState = ReturnType<AppStore["getState"]>;
 export type AppDispatch = AppStore["dispatch"];
 

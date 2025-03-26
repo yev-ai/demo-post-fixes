@@ -4,6 +4,18 @@ I'll be using this to properly rewrite the questionable _(at best)_ [result of a
 
 Disclaimer: this is a prescriptive project built primarily for my own educational purposes.
 
+As of the latest commit(s), I'm playing around with:
+
+- Redux to re-learn best practices and the changes
+- Specifically how to use redux with NextJS SSR/PPR
+- How to use NextJS to get the most out of SSR
+
+My idea right now is, for /lib/redux/slices/ui-state, to make a factory for it that:
+
+- Defaults to what a first-time load user would see, fully SSR'd.
+- Stores any UI state preferences and changes in cookies.
+- Uses those cookies server-side to fully SSR the base UI.
+
 ## Template versions
 
 - [V1 template: the alpine of NextJS SPAs](https://github.com/yev-ai/demo-post-fixes/tree/starter-template)

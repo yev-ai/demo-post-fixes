@@ -2,28 +2,23 @@
 
 import { useCallback, useEffect, useRef } from "react";
 
-import { useUiState } from "@hooks";
 import {
-  AVAILABLE_LOCALES,
   getTranslation,
   loadTranslations,
   selectIsLoading,
-  selectLocale,
   selectTranslations,
-  setLocale as setLocaleAction,
 } from "@slices/localization";
+import { getLocale, setLocale } from "@slices/ui-state";
 import type { LocaleCode } from "@types";
-import { useAppDispatch, useAppSelector } from "./redux";
+import { useDispatch, useSelector } from "./redux";
 
 export function useLocalization(namespace?: string) {
-  const dispatch = useAppDispatch();
-  const locale = useAppSelector(selectLocale);
-  const translations = useAppSelector(selectTranslations);
-  const isLoading = useAppSelector(selectIsLoading);
+  const dispatch = useDispatch();
+  const translations = useSelector(selectTranslations);
+  const isLoading = useSelector(selectIsLoading);
 
-  // Get persisted language preference
-  const { language: persistedLanguage, setLanguage: updatePersistedLanguage } =
-    useUiState();
+  // Get locale directly from the UI state slice
+  const locale = useSelector(getLocale);
 
   const translationsRef = useRef(translations);
   useEffect(() => {
@@ -35,28 +30,37 @@ export function useLocalization(namespace?: string) {
     if (!initialLoadRef.current) {
       initialLoadRef.current = true;
 
-      if (persistedLanguage && persistedLanguage !== locale) {
-        dispatch(setLocaleAction(persistedLanguage));
-      }
-
+      // Load translations if not already loaded for current locale
       if (!translations[locale]) {
         dispatch(loadTranslations(locale));
       }
     }
-  }, []);
+  }, [dispatch, locale, translations]);
 
-  const setLocale = useCallback(
+  // Also load translations when locale changes
+  useEffect(() => {
+    if (initialLoadRef.current && !translations[locale]) {
+      dispatch(loadTranslations(locale));
+    }
+  }, [dispatch, locale, translations]);
+
+  const changeLocale = useCallback(
     async (newLocale: LocaleCode) => {
+      // Don't do anything if it's the same locale
+      if (newLocale === locale) return;
+
+      // Load translations if needed
       if (!translationsRef.current[newLocale]) {
         await dispatch(loadTranslations(newLocale)).unwrap();
+        dispatch(setLocale(newLocale));
+      } else {
+        // If we already have translations, we can manually set them
+        dispatch(setLocale(newLocale));
       }
 
-      dispatch(setLocaleAction(newLocale));
-
-      // Update persisted language preference
-      updatePersistedLanguage(newLocale);
+      // Update UI state locale directly
     },
-    [dispatch, updatePersistedLanguage]
+    [dispatch, locale]
   );
 
   const tx = useCallback(
@@ -70,8 +74,7 @@ export function useLocalization(namespace?: string) {
   return {
     tx,
     locale,
-    setLocale,
-    availableLocales: AVAILABLE_LOCALES,
+    setLocale: changeLocale,
     isLoading,
   };
 }

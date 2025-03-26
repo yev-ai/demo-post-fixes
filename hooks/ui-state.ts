@@ -1,53 +1,108 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 
+import { AVAILABLE_LOCALES } from "@/lib/localization";
+import { useDispatch, useSelector } from "@hooks";
 import {
-  selectLanguage,
-  selectTheme,
-  setLanguage,
-  setTheme,
+  getLocale as getReduxLocale,
+  getTheme as getReduxTheme,
+  setLocale as setReduxLocale,
+  setTheme as setReduxTheme,
 } from "@slices/ui-state";
-import type { LocaleCode, UiPreferencesState } from "@types";
-import { useAppDispatch, useAppSelector } from "./redux";
+import type { LocaleCode, UIState } from "@types";
+
+const isValidTheme = (theme: string | undefined): theme is UIState["theme"] => {
+  return !!theme && ["light", "dark", "system"].includes(theme);
+};
 
 export function useUiState() {
-  const dispatch = useAppDispatch();
-  const persistedTheme = useAppSelector(selectTheme);
-  const persistedLanguage = useAppSelector(selectLanguage);
-  const { theme, setTheme: setNextTheme } = useTheme();
+  const dispatch = useDispatch();
+  const reduxTheme = useSelector(getReduxTheme);
+  const reduxLocale = useSelector(getReduxLocale);
+  const { theme, setTheme: setPackageTheme, resolvedTheme } = useTheme();
 
-  const isValidTheme = (
-    theme: string | undefined
-  ): theme is UiPreferencesState["theme"] => {
-    return !!theme && ["light", "dark", "system"].includes(theme);
-  };
-
-  // On first mount, initialize next-themes from Redux if available
   useEffect(() => {
-    // Only set theme from persisted state on initial mount
-    if (persistedTheme && persistedTheme !== theme) {
-      setNextTheme(persistedTheme);
+    if (reduxTheme && reduxTheme !== theme) {
+      setPackageTheme(reduxTheme);
     }
-  }, []); // Empty dependency array for initial mount only
+  }, []); // Initial mount
 
-  // When theme changes in next-themes, update Redux
   useEffect(() => {
-    // Only update Redux if the theme is defined and different
-    if (isValidTheme(theme) && theme !== persistedTheme) {
-      dispatch(setTheme(theme));
+    if (isValidTheme(theme) && theme !== reduxTheme) {
+      dispatch(setReduxTheme(theme));
     }
-  }, [theme, persistedTheme, dispatch]);
+  }, [theme, reduxTheme, dispatch]);
 
-  // Function to update language in Redux
-  const updateLanguage = (newLanguage: LocaleCode) => {
-    dispatch(setLanguage(newLanguage));
-  };
+  const setLocale = useCallback(
+    (newLocale: LocaleCode) => {
+      dispatch(setReduxLocale(newLocale));
+    },
+    [dispatch]
+  );
 
-  return {
-    // Return the persisted language and update function
-    language: persistedLanguage,
-    setLanguage: updateLanguage,
-  };
+  const setTheme = useCallback(
+    (newTheme: UIState["theme"]) => {
+      if (isValidTheme(newTheme)) {
+        // Update redux and next-themes to sync them.
+        dispatch(setReduxTheme(newTheme));
+        setPackageTheme(newTheme);
+      }
+    },
+    [dispatch, setPackageTheme]
+  );
+
+  // Everything below this is critical for maintaining stable references.
+  // For example: we can't destructure - that creates new refs, etc.
+  // Create an enhanced theme object that includes both theme and resolvedTheme
+  const enhancedTheme = useMemo(() => {
+    // Use Redux theme as the source of truth for preference
+    const preference = reduxTheme || theme || "system";
+
+    // For current theme, prioritize Redux for immediate availability
+    const current =
+      reduxTheme === "system"
+        ? resolvedTheme || "light"
+        : reduxTheme || resolvedTheme || "light";
+
+    // Determine isDark based on the current theme
+    const isDark = current === "dark";
+
+    return {
+      preference,
+      current,
+      isDark,
+    };
+  }, [reduxTheme, theme, resolvedTheme]);
+
+  // Everything below this is critical for maintaining stable references.
+  const localeState = useMemo(
+    () => ({
+      locale: reduxLocale,
+      setLocale,
+    }),
+    [reduxLocale, setLocale]
+  );
+
+  const themeState = useMemo(
+    () => ({
+      theme: enhancedTheme,
+      setTheme,
+    }),
+    [enhancedTheme, setTheme]
+  );
+
+  const output = useMemo(
+    () => ({
+      locale: localeState.locale,
+      setLocale: localeState.setLocale,
+      availableLocales: AVAILABLE_LOCALES,
+      theme: themeState.theme,
+      setTheme: themeState.setTheme,
+    }),
+    [localeState, themeState]
+  );
+
+  return output;
 }

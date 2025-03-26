@@ -20,16 +20,14 @@ export default function RootLayout({
         <title>NextJS 15 Demo</title>
       </head>
       <body>
-        <ThemeProvider>
+        <SessionProvider
+          refetchOnWindowFocus={false}
+          refetchWhenOffline={false}
+        >
           <ReduxProvider>
-            <SessionProvider
-              refetchOnWindowFocus={false}
-              refetchWhenOffline={false}
-            >
-              {children}
-            </SessionProvider>
+            <ThemeProvider>{children}</ThemeProvider>
           </ReduxProvider>
-        </ThemeProvider>
+        </SessionProvider>
       </body>
     </html>
   );

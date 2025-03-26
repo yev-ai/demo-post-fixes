@@ -1,31 +1,31 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import type { LocaleCode, RootState, UiPreferencesState } from "@types";
+import type { RootState, UIState } from "@types";
 
-const initialState: UiPreferencesState = {
+const initialState: UIState = {
   theme: "system",
   language: "en",
 };
 
-export const uiPreferencesSlice = createSlice({
+export const uiStateSlice = createSlice({
   name: "uiState",
   initialState,
   reducers: {
-    setTheme: (state, action: PayloadAction<"light" | "dark" | "system">) => {
+    setTheme: (state, action: PayloadAction<UIState["theme"]>) => {
       state.theme = action.payload;
     },
-    setLanguage: (state, action: PayloadAction<LocaleCode>) => {
+    setLocale: (state, action: PayloadAction<UIState["language"]>) => {
       state.language = action.payload;
     },
   },
 });
 
 // Export actions
-export const { setTheme, setLanguage } = uiPreferencesSlice.actions;
+export const { setTheme, setLocale } = uiStateSlice.actions;
 
 // Export selectors
-export const selectTheme = (state: RootState) => state.uiState.theme;
-export const selectLanguage = (state: RootState) => state.uiState.language;
+export const getTheme = (state: RootState) => state.uiState.theme;
+export const getLocale = (state: RootState) => state.uiState.language;
 
 // Export reducer
-export default uiPreferencesSlice.reducer;
+export default uiStateSlice.reducer;

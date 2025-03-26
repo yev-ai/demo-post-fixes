@@ -4,29 +4,17 @@ import {
   type PayloadAction,
 } from "@reduxjs/toolkit";
 
-import type {
-  LocaleCode,
-  LocaleDetails,
-  LocaleType,
-  LocaleValue,
-} from "@types";
+import type { LocaleCode, LocaleData, LocaleValue } from "@types";
 import type { RootState } from "../store";
 
 import { en } from "@/lib/localization/locales/en";
 
-export const AVAILABLE_LOCALES: LocaleDetails[] = [
-  { languageCode: "en", englishName: "English", nativeName: "English" },
-  { languageCode: "es", englishName: "English", nativeName: "Español" },
-];
-
 interface LocalizationState {
-  locale: LocaleCode;
-  translations: Partial<Record<LocaleCode, LocaleType>>;
+  translations: Partial<Record<LocaleCode, LocaleData>>;
   isLoading: boolean;
 }
 
 const initialState: LocalizationState = {
-  locale: "en",
   translations: { en },
   isLoading: false,
 };
@@ -35,14 +23,11 @@ const localizationSlice = createSlice({
   name: "localization",
   initialState,
   reducers: {
-    setLocale: (state, action: PayloadAction<LocaleCode>) => {
-      state.locale = action.payload;
-    },
-    setTranslations: (
+    setLocale: (
       state,
       action: PayloadAction<{
         locale: LocaleCode;
-        translations: LocaleType;
+        translations: LocaleData;
       }>
     ) => {
       state.translations[action.payload.locale] = action.payload.translations;
@@ -53,8 +38,7 @@ const localizationSlice = createSlice({
   },
 });
 
-export const { setLocale, setTranslations, setLoading } =
-  localizationSlice.actions;
+export const { setLocale, setLoading } = localizationSlice.actions;
 
 export const loadTranslations = createAsyncThunk(
   "localization/loadTranslations",
@@ -64,9 +48,9 @@ export const loadTranslations = createAsyncThunk(
 
       const localeData = await import(`@/lib/localization/locales/${locale}`);
 
-      const localeObject = localeData[locale];
+      const localeObject = localeData[locale] as LocaleData;
 
-      dispatch(setTranslations({ locale, translations: localeObject }));
+      dispatch(setLocale({ locale, translations: localeObject }));
 
       dispatch(setLoading(false));
     } catch (error) {
@@ -76,7 +60,6 @@ export const loadTranslations = createAsyncThunk(
   }
 );
 
-export const selectLocale = (state: RootState) => state.localization.locale;
 export const selectTranslations = (state: RootState) =>
   state.localization.translations;
 export const selectIsLoading = (state: RootState) =>
@@ -100,7 +83,7 @@ function getNestedProperty(
 }
 
 export const getTranslation = (
-  translations: Partial<Record<LocaleCode, LocaleType>>,
+  translations: Partial<Record<LocaleCode, LocaleData>>,
   locale: LocaleCode,
   key: string,
   defaultValue?: string
