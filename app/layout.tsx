@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 
-import { AuthProvider } from "@providers";
-
-import { LocalizationProvider, ThemeProvider } from "@providers";
+import {
+  AuthProvider,
+  LocalizationProvider,
+  ReduxProvider,
+  ThemeProvider,
+} from "@providers";
 
 import "./globals.css";
 
@@ -24,7 +27,9 @@ export default async function RootLayout({
       <body>
         <ThemeProvider>
           <LocalizationProvider>
-            <AuthProvider>{children}</AuthProvider>
+            <ReduxProvider>
+              <AuthProvider>{children}</AuthProvider>
+            </ReduxProvider>
           </LocalizationProvider>
         </ThemeProvider>
       </body>

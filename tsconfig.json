@@ -27,7 +27,8 @@
       "@ui/*": ["./components/*"],
       "@providers": ["./providers/index.ts"],
       "@hooks": ["./hooks/index.ts"],
-      "@types": ["./types/index.ts"]
+      "@types": ["./types/index.ts"],
+      "@slices/*": ["./lib/redux/slices/*"]
     },
     "target": "esnext"
   },
