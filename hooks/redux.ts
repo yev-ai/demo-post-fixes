@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import {
   useDispatch,
   useSelector,
@@ -6,7 +7,6 @@ import {
 
 import { initializeStore } from "@/lib/redux/store";
 import { AppDispatch, RootState } from "@types";
-import { useMemo } from "react";
 
 export const useStore = (initialState: RootState) => {
   return useMemo(() => initializeStore(initialState), [initialState]);

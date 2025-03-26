@@ -1,7 +1,8 @@
-import { prisma } from "@/lib/prisma";
 import EmailProvider from "@auth/core/providers/nodemailer";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth, { type NextAuthConfig } from "next-auth";
+
+import { prisma } from "@/lib/prisma";
 
 const isProduction = process.env.NODE_ENV === "production";
 const EMAIL_SIGNUP_ALLOWED_SUFFIXES =

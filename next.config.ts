@@ -12,20 +12,24 @@ const nextConfig = {
   reactStrictMode: true,
   output: "standalone",
   experimental: {
-    // ppr: "incremental", <- This results in a bigger initial page load for now.
+    // ppr: "incremental", // <- This will be useful later for streaming RSCs
     cssChunking: true,
     optimizeCss: true,
     optimizeServerReact: true,
     externalDir: true,
     esmExternals: true,
-    // reactCompiler: true, <- This results in a bigger initial page load for now.
+    reactCompiler: true,
     typedEnv: true,
+    clientRouterFilter: true,
+    clientRouterFilterRedirects: true,
     parallelServerCompiles: !performAnalysis,
     parallelServerBuildTraces: !performAnalysis,
+    taint: true,
     optimizePackageImports: ["react", "@radix-ui/react-select"],
     useCache: true,
   },
   compress: true,
+  productionBrowserSourceMaps: false,
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [

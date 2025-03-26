@@ -49,6 +49,7 @@
     "@types/react": "^19.0.12",
     "@types/react-dom": "^19.0.4",
     "@types/react-redux": "^7.1.34",
+    "babel-plugin-react-compiler": "^19.0.0-beta-aeaed83-20250323",
     "critters": "^0.0.25",
     "eslint": "^9.23.0",
     "eslint-config-next": "^15.2.3",

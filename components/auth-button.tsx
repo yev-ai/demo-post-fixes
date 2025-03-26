@@ -1,20 +1,21 @@
 "use client";
+
 import { signIn, signOut, useSession } from "next-auth/react";
 
-import { Button } from "@/components/ui/button";
 import { useLocalization } from "@hooks";
+import { Button } from "@ui-base/button";
 
 export function AuthButton({ className }: { className?: string }) {
-  const { tx: loc } = useLocalization("auth");
+  const { tx } = useLocalization("auth");
   const { status } = useSession();
   const isLoggedIn = status === "authenticated";
   const isLoading = status === "loading";
 
   const buttonText = isLoading
-    ? loc("loading", "Loading")
+    ? tx("loading")
     : isLoggedIn
-    ? loc("logout", "Loading")
-    : loc("login", "Loading");
+    ? tx("logout")
+    : tx("login");
 
   return (
     <div className={className}>

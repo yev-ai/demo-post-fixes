@@ -1,12 +1,7 @@
 import type { Metadata } from "next";
+import { SessionProvider } from "next-auth/react";
 
-import {
-  AuthProvider,
-  LocalizationProvider,
-  ReduxProvider,
-  ThemeProvider,
-} from "@providers";
-
+import { ReduxProvider, ThemeProvider } from "@providers";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -14,7 +9,7 @@ export const metadata: Metadata = {
   description: "React 19 with Tailwind 4",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -26,11 +21,14 @@ export default async function RootLayout({
       </head>
       <body>
         <ThemeProvider>
-          <LocalizationProvider>
-            <ReduxProvider>
-              <AuthProvider>{children}</AuthProvider>
-            </ReduxProvider>
-          </LocalizationProvider>
+          <ReduxProvider>
+            <SessionProvider
+              refetchOnWindowFocus={false}
+              refetchWhenOffline={false}
+            >
+              {children}
+            </SessionProvider>
+          </ReduxProvider>
         </ThemeProvider>
       </body>
     </html>

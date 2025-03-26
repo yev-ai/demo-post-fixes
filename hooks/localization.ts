@@ -1,49 +1,65 @@
 "use client";
 
-import { LocalizationContext } from "@providers";
-import { use } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
-/**
- * Custom hook that provides localization functionality with optional namespace support.
- *
- * This hook allows components to access localization functions and can automatically
- * prefix translation keys with a namespace to organize translations hierarchically.
- *
- * @param namespace - Optional string prefix to be applied to all translation keys
- * @returns The localization context object, with the `tx` function modified to apply the namespace if provided
- * @throws {Error} If the hook is used outside of a LocalizationProvider
- *
- * @example
- * // Basic usage
- * const { tx } = useLocalization();
- * const message = tx('common.welcome');
- *
- * @example
- * // With namespace
- * const { tx } = useLocalization('profile');
- * const title = tx('title'); // Will look up 'profile.title'
- */
+import { useAppDispatch, useAppSelector } from "@hooks";
+import {
+  AVAILABLE_LOCALES,
+  getTranslation,
+  loadTranslations,
+  selectIsLoading,
+  selectLocale,
+  selectTranslations,
+  setLocale as setLocaleAction,
+} from "@slices/localization";
+import { LocaleCode } from "@types";
+
 export function useLocalization(namespace?: string) {
-  const context = use(LocalizationContext);
+  const dispatch = useAppDispatch();
+  const locale = useAppSelector(selectLocale);
+  const translations = useAppSelector(selectTranslations);
+  const isLoading = useAppSelector(selectIsLoading);
 
-  if (!context) {
-    throw new Error(
-      "useLocalization must be used within a LocalizationProvider"
-    );
-  }
+  const translationsRef = useRef(translations);
+  useEffect(() => {
+    translationsRef.current = translations;
+  }, [translations]);
 
-  if (!namespace) return context;
+  const initialLoadRef = useRef(false);
+  useEffect(() => {
+    if (!initialLoadRef.current) {
+      initialLoadRef.current = true;
 
-  const namespacedLocalization = (
-    key: string,
-    loadingDefault?: string
-  ): string => {
-    const fullKey = `${namespace}.${key}`;
-    return context.tx(fullKey, loadingDefault);
-  };
+      if (!translations[locale]) {
+        dispatch(loadTranslations(locale));
+      }
+    }
+  }, []);
+
+  const setLocale = useCallback(
+    async (newLocale: LocaleCode) => {
+      if (!translationsRef.current[newLocale]) {
+        await dispatch(loadTranslations(newLocale)).unwrap();
+      }
+
+      dispatch(setLocaleAction(newLocale));
+    },
+    [dispatch]
+  );
+
+  const tx = useCallback(
+    (key: string, defaultValue?: string): string => {
+      const fullKey = namespace ? `${namespace}.${key}` : key;
+      return getTranslation(translations, locale, fullKey, defaultValue);
+    },
+    [translations, locale, namespace]
+  );
 
   return {
-    ...context,
-    tx: namespacedLocalization,
+    tx,
+    locale,
+    setLocale,
+    availableLocales: AVAILABLE_LOCALES,
+    isLoading,
   };
 }

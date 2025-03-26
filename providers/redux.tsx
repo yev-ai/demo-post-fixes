@@ -1,8 +1,9 @@
 "use client";
 
+import { Provider } from "react-redux";
+
 import { useStore } from "@hooks";
 import { RootState } from "@types";
-import { Provider } from "react-redux";
 
 export const ReduxProvider = function ReduxProvider({
   children,

@@ -1,10 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import counterReducer from "@slices/counter";
+
+import localization from "@slices/localization";
 
 export const makeStore = (preloadedState = {}) => {
   return configureStore({
     reducer: {
-      counter: counterReducer,
+      localization,
     },
     preloadedState,
   });
