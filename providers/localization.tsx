@@ -1,16 +1,13 @@
 "use client";
 
-import { type LocaleType } from "@types";
+import {
+  LocaleCode,
+  LocaleDetails,
+  LocaleType,
+  LocaleValue,
+  LocalizationContext as LocalizationContextType,
+} from "@types";
 import { createContext, ReactNode, useEffect, useState } from "react";
-
-/**
- * Recursive type for nested translation values
- */
-type LocaleValue = string | { [key: string]: LocaleValue };
-
-type LocaleDetails = { languageCode: LocaleCode } & LocaleType["language"];
-
-type LocaleCode = "en" | "es";
 
 const localeMetadata: Record<LocaleCode, LocaleType["language"]> = {
   en: { englishName: "English", nativeName: "English" },
@@ -23,20 +20,6 @@ const availableLocales = Object.freeze(
     ...config,
   }))
 ) as readonly LocaleDetails[];
-
-/**
- * Context interface for localization functionality
- */
-interface LocalizationContextType {
-  /** Translates a key to the current locale's value */
-  tx: (key: string, loadingDefault?: string) => string;
-  /** Current active locale code */
-  locale: LocaleCode;
-  availableLocales: readonly LocaleDetails[];
-  /** Function to change the active locale */
-  setLocale: (locale: LocaleCode) => void;
-  isLoading: boolean;
-}
 
 export const LocalizationContext =
   createContext<LocalizationContextType | null>(null);

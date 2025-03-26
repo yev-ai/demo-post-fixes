@@ -4,11 +4,8 @@ import {
   type TypedUseSelectorHook,
 } from "react-redux";
 
-import {
-  initializeStore,
-  type AppDispatch,
-  type RootState,
-} from "@/lib/redux/store";
+import { initializeStore } from "@/lib/redux/store";
+import { AppDispatch, RootState } from "@types";
 import { useMemo } from "react";
 
 export const useStore = (initialState: RootState) => {

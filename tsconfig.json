@@ -25,10 +25,10 @@
       "@components/*": ["./components/*"],
       "@ui-base/*": ["./components/ui/*"],
       "@ui/*": ["./components/*"],
+      "@slices/*": ["./lib/redux/slices/*"],
       "@providers": ["./providers/index.ts"],
       "@hooks": ["./hooks/index.ts"],
-      "@types": ["./types/index.ts"],
-      "@slices/*": ["./lib/redux/slices/*"]
+      "@types": ["./types/index.ts"]
     },
     "target": "esnext"
   },

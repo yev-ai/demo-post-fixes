@@ -1,7 +1,6 @@
 "use client";
 
 import { SessionProvider } from "next-auth/react";
-import { type ReactNode } from "react";
 
 /**
  * Authentication provider component that wraps the application with session management.
@@ -9,7 +8,7 @@ import { type ReactNode } from "react";
  *
  * @component
  * @param {Object} props - The component props
- * @param {ReactNode} props.children - The child components to be wrapped with session management
+ * @param {React.ReactNode} props.children - The child components to be wrapped with session management
  * @returns {JSX.Element} A SessionProvider component configured with specific refetch settings
  *
  * @example
@@ -20,7 +19,7 @@ import { type ReactNode } from "react";
 export const AuthProvider = function AuthProvider({
   children,
 }: {
-  children: ReactNode;
+  children: React.ReactNode;
 }) {
   return (
     <SessionProvider
