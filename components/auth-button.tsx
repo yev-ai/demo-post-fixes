@@ -5,17 +5,22 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { useLocalization } from "@hooks";
 import { Button } from "@ui-base/button";
 
-export function AuthButton({ className }: { className?: string }) {
+export function AuthButton({
+  className,
+  email,
+}: {
+  className?: string;
+  email?: string;
+}) {
   const { tx } = useLocalization("auth");
-  const { status } = useSession();
-  const isLoggedIn = status === "authenticated";
-  const isLoading = status === "loading";
+  const { data: clientSession, status } = useSession();
 
-  const buttonText = isLoading
-    ? tx("loading")
-    : isLoggedIn
-    ? tx("logout")
-    : tx("login");
+  const isLoggedIn =
+    status === "loading"
+      ? email !== undefined
+      : status === "authenticated" && !!clientSession?.user?.email;
+
+  const buttonText = isLoggedIn ? tx("logout") : tx("login");
 
   return (
     <div className={className}>

@@ -7,6 +7,9 @@ export const en = createLocale("en", {
   auth: {
     login: "Login",
     logout: "Logout",
-    loading: "Loading",
+  },
+  mainApp: {
+    welcome: "Welcome",
+    pleaseLogin: "Log in to use the app",
   },
 });

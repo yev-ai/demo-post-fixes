@@ -12,7 +12,6 @@ import type {
 } from "@types";
 import type { RootState } from "../store";
 
-// Import the default locale translations upfront
 import { en } from "@/lib/localization/locales/en";
 
 export const AVAILABLE_LOCALES: LocaleDetails[] = [

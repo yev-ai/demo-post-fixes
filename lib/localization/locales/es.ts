@@ -7,6 +7,9 @@ export const es = createLocale("es", {
   auth: {
     login: "ES Login",
     logout: "ES Logout",
-    loading: "ES Ld",
+  },
+  mainApp: {
+    welcome: "ES Welcome",
+    pleaseLogin: "ES Log in to use the app",
   },
 });

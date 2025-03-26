@@ -3,4 +3,6 @@ export {
   type AppStore,
   type RootState,
 } from "@/lib/redux/store";
-export * from "./locale";
+export * from "./localization";
+
+export { type UiPreferencesState } from "./ui-state";

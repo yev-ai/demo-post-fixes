@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef } from "react";
 
-import { useAppDispatch, useAppSelector } from "@hooks";
+import { useUiState } from "@hooks";
 import {
   AVAILABLE_LOCALES,
   getTranslation,
@@ -12,13 +12,18 @@ import {
   selectTranslations,
   setLocale as setLocaleAction,
 } from "@slices/localization";
-import { LocaleCode } from "@types";
+import type { LocaleCode } from "@types";
+import { useAppDispatch, useAppSelector } from "./redux";
 
 export function useLocalization(namespace?: string) {
   const dispatch = useAppDispatch();
   const locale = useAppSelector(selectLocale);
   const translations = useAppSelector(selectTranslations);
   const isLoading = useAppSelector(selectIsLoading);
+
+  // Get persisted language preference
+  const { language: persistedLanguage, setLanguage: updatePersistedLanguage } =
+    useUiState();
 
   const translationsRef = useRef(translations);
   useEffect(() => {
@@ -29,6 +34,10 @@ export function useLocalization(namespace?: string) {
   useEffect(() => {
     if (!initialLoadRef.current) {
       initialLoadRef.current = true;
+
+      if (persistedLanguage && persistedLanguage !== locale) {
+        dispatch(setLocaleAction(persistedLanguage));
+      }
 
       if (!translations[locale]) {
         dispatch(loadTranslations(locale));
@@ -43,8 +52,11 @@ export function useLocalization(namespace?: string) {
       }
 
       dispatch(setLocaleAction(newLocale));
+
+      // Update persisted language preference
+      updatePersistedLanguage(newLocale);
     },
-    [dispatch]
+    [dispatch, updatePersistedLanguage]
   );
 
   const tx = useCallback(

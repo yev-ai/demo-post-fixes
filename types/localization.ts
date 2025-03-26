@@ -13,7 +13,10 @@ export type LocaleType = {
   auth: {
     login: string;
     logout: string;
-    loading: string;
+  };
+  mainApp: {
+    welcome: string;
+    pleaseLogin: string;
   };
 };
 

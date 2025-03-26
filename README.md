@@ -1,8 +1,10 @@
 # NextJS Starter Template
 
+This template is now ready for UI-based user-facing GenAI and ML SPAs.
+
 This is for production builds served via a tunnel or proxy.
 
-- First load bundle size is 164kB
+- First load bundle size is 168kB
 - Standalone artifact size is 91MB
 - Overall Docker image size is 180MB
 
@@ -16,6 +18,10 @@ This is for production builds served via a tunnel or proxy.
   - Many other things are 150%+ faster than Node
 - React 19
 - Redux 9.2
+  - Set up to persist language and theme preferences
+  - These are both done under "uiState" which we will use for:
+    - API connection to server for dynamic UI rendering updates
+    - Stream/WebSocket connection to server for LLMs via [RTK](https://redux-toolkit.js.org/rtk-query/overview)
 - ShadCN UI with:
   - TailwindCSS 4
   - Theme Switcher
