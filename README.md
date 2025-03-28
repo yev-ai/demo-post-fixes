@@ -1,5 +1,7 @@
 # SPA template for user-facing GenAI and ML
 
+Also: I _HIGHLY_ encourage you to install Cline. It's availbe as a [VS Code plugin] and compensates for a lot of Copilot Enterprise's weaknesses. Using them together is awesome - just set up the proper keybinds for it.
+
 I'll be using this to properly rewrite the questionable _(at best)_ [result of a timed coding exercise](https://github.com/yev-ai/sai-transcription-demo)
 
 Disclaimer: this is a prescriptive project built primarily for my own educational purposes.
@@ -15,6 +17,8 @@ My idea right now is, for /lib/redux/slices/ui-state, to make a factory for it t
 - Defaults to what a first-time load user would see, fully SSR'd.
 - Stores any UI state preferences and changes in cookies.
 - Uses those cookies server-side to fully SSR the base UI.
+
+I'm a performance fanatic and am learning a lot about NextJS. I've included the less obvious things I think are cool to share in [NEXTJS.md](https://github.com/yev-ai/demo-post-fixes/blob/main/NEXTJS.md)
 
 ## Template versions
 
