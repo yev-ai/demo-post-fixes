@@ -9,8 +9,7 @@ import {
 
 const themeOptions = {
   attribute: "class",
-  enableSystem: true,
-  defaultTheme: "system",
+  defaultTheme: "light",
   disableTransitionOnChange: true,
 } as const;
 

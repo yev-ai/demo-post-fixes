@@ -1,4 +1,4 @@
-export const validThemes = ["light", "dark", "system"] as const;
+export const validThemes = ["light", "dark"] as const;
 export const validLocaleCodes = ["en", "es"] as const;
 
 export type LocaleCode = (typeof validLocaleCodes)[number];

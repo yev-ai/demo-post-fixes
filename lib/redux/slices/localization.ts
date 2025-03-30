@@ -7,15 +7,15 @@ import {
 import type { LocaleCode, LocaleData, LocaleValue } from "@types";
 import type { RootState } from "../store";
 
-import { en } from "@/lib/localization/locales/en";
+// import { en } from "@/lib/localization/locales/en";
 
 interface LocalizationState {
-  translations: Partial<Record<LocaleCode, LocaleData>>;
+  translations: Record<LocaleCode, LocaleData>;
   isLoading: boolean;
 }
 
 const initialState: LocalizationState = {
-  translations: { en },
+  translations: {} as Record<LocaleCode, LocaleData>, // would add the import here.
   isLoading: false,
 };
 
@@ -30,7 +30,7 @@ const localizationSlice = createSlice({
         translations: LocaleData;
       }>
     ) => {
-      state.translations[action.payload.locale] = action.payload.translations;
+      state.translations![action.payload.locale] = action.payload.translations;
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;

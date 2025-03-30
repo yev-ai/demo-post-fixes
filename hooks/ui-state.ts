@@ -11,11 +11,7 @@ import {
   setLocale as setReduxLocale,
   setTheme as setReduxTheme,
 } from "@slices/ui-state";
-import type { LocaleCode, UIState } from "@types";
-
-const isValidTheme = (theme: string | undefined): theme is UIState["theme"] => {
-  return !!theme && ["light", "dark", "system"].includes(theme);
-};
+import { type LocaleCode, type UIState, isUITheme } from "@types";
 
 export function useUiState() {
   const dispatch = useDispatch();
@@ -30,7 +26,7 @@ export function useUiState() {
   }, []); // Initial mount
 
   useEffect(() => {
-    if (isValidTheme(theme) && theme !== reduxTheme) {
+    if (isUITheme(theme) && theme !== reduxTheme) {
       dispatch(setReduxTheme(theme));
     }
   }, [theme, reduxTheme, dispatch]);
@@ -44,7 +40,7 @@ export function useUiState() {
 
   const setTheme = useCallback(
     (newTheme: UIState["theme"]) => {
-      if (isValidTheme(newTheme)) {
+      if (isUITheme(newTheme)) {
         // Update redux and next-themes to sync them.
         dispatch(setReduxTheme(newTheme));
         setPackageTheme(newTheme);
@@ -58,21 +54,14 @@ export function useUiState() {
   // Create an enhanced theme object that includes both theme and resolvedTheme
   const enhancedTheme = useMemo(() => {
     // Use Redux theme as the source of truth for preference
-    const preference = reduxTheme || theme || "system";
+    const preference = reduxTheme || theme;
 
     // For current theme, prioritize Redux for immediate availability
-    const current =
-      reduxTheme === "system"
-        ? resolvedTheme || "light"
-        : reduxTheme || resolvedTheme || "light";
-
-    // Determine isDark based on the current theme
-    const isDark = current === "dark";
+    const current = reduxTheme;
 
     return {
       preference,
       current,
-      isDark,
     };
   }, [reduxTheme, theme, resolvedTheme]);
 
