@@ -2,10 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import type { RootState, UIState } from "@types";
 
-const initialState: UIState = {
-  theme: "system",
-  language: "en",
-};
+const initialState: UIState = {} as UIState;
 
 export const uiStateSlice = createSlice({
   name: "uiState",

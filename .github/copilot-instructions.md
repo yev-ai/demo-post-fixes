@@ -5,7 +5,9 @@
 - ShadCN UI
 - TailwindCSS 4
 - React 19
+- Redux 9
 - NextJS 15.3 Canary with:
+  - App Router
   - Partial page rendering (PPR)
   - React Compiler (RC) for optimized bundle size
   - Optimized CSS output
@@ -16,6 +18,7 @@
 
 # TypeScript Instructions
 
+- Always use import instead of require. Do not use require.
 - Access objects safely, properly using "?." and "??". Sparingly use "!" when appropriate.
 - Use modern TypeScript 5+ features like "satisfies", "infer", "asserts", "as const", etc.
 - Prefer the mapReduce pattern when possible, especially for arrays, sets, and maps.

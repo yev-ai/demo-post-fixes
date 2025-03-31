@@ -10,8 +10,33 @@ const EMAIL_SIGNUP_ALLOWED_SUFFIXES =
 
 const nextAuthConfig = {
   adapter: PrismaAdapter(prisma),
+  /* This is an important design choice, especially for NextJS.
+   * strategy "database" means:
+   *   - 1) JWT contains the session ID
+   *   - 2) We use that to look up the session in DB
+   *   - 3) callbacks.session lets us filter what goes from the DB to the client
+   *   - Pro: other services can read / write to the session without client RQs.
+   *   - Pro: control, audits, analytics. You can track logged in devices, etc.
+   *   - Pro: session invalidation can be done instantly (significant security +)
+   *   - Con: DB query latency for requests (1-3 ms on top of 20ms+ client RTT)
+   *   - Con: horizontal scaling is tricky in distributed systems, esp at scale
+   * strategy "jwt" means:
+   *   - 1) server receives encrypted JWT
+   *   - 2) server verifies and decrypts the JWT
+   *   - 3) callbacks.session lets us filter what goes from the JWT to the client
+   *   - Pro: easy and pleasant to integrate with other services.
+   *   - Pro: JWT signatures can be verified at edge.
+   *   - Pro: very horizontally scalable.
+   *   - Pro: extremely fast.
+   *   - Con: Hard limit on session object size.
+   *   - Con: session invalidation is not instant.
+   *   - Con: only services with the auth secret can write to session.
+   *   - Con: token rotation must be handled (less work than a DB, especially at scale)
+   *   - Con: you *can* get hit with replay attacks if you don't rotate often enough.
+   * TLDR unless you explicitly need some of the DB session strategy features, use JWT.
+   */
   session: {
-    strategy: "database",
+    strategy: "jwt",
   },
   providers: [
     EmailProvider({

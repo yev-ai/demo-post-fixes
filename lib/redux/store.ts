@@ -10,42 +10,39 @@ import {
   REHYDRATE,
   type Persistor,
 } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import { createCookieStorage } from "./storage/cookie";
 
 import localization from "@slices/localization";
 import uiState from "@slices/ui-state";
 
-// Define the root reducer type explicitly
 type RootReducer = {
   localization: typeof localization;
   uiState: typeof uiState;
 };
 
-// Create a client-side only version of the persist config
-const uiStatePersistConfig = {
-  key: "uiState",
-  storage,
-  // Skip persisting during SSR
-  skipHydration: true,
-};
-
 export const makeStore = (preloadedState = {}) => {
   const isServer = typeof window === "undefined";
 
-  // Create different reducers for server and client
   let reducers: RootReducer;
 
   if (isServer) {
-    // On server, use regular reducers
     reducers = {
       localization,
       uiState,
     };
   } else {
-    // On client, use persisted uiState
+    const uiStatePersistConfig = {
+      key: "uiState",
+      storage: createCookieStorage,
+      serialize: false,
+      whitelist: ["theme", "language"],
+    };
     reducers = {
       localization,
-      uiState: persistReducer(uiStatePersistConfig, uiState) as typeof uiState,
+      uiState: persistReducer(
+        uiStatePersistConfig,
+        uiState
+      ) as unknown as typeof uiState,
     };
   }
 
@@ -72,7 +69,6 @@ type AppPersistor = Persistor;
 export type RootState = ReturnType<AppStore["getState"]>;
 export type AppDispatch = AppStore["dispatch"];
 
-// For client-side store initialization
 let storeInstance: { store: AppStore; persistor: AppPersistor | null } | null =
   null;
 
@@ -82,12 +78,10 @@ export const initializeStore = (preloadedState?: Partial<RootState>) => {
     return makeStore(preloadedState).store;
   }
 
-  // Create the store if not available on the client
   if (!storeInstance) {
     storeInstance = makeStore(preloadedState);
   }
 
-  // If preloadedState is provided, merge with existing state
   if (preloadedState) {
     const newStore = makeStore({
       ...storeInstance.store.getState(),

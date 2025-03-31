@@ -13,7 +13,7 @@ export const ReduxProvider = function ReduxProvider({
   initialState,
 }: {
   children: React.ReactNode;
-  initialState?: Partial<RootState>;
+  initialState?: RootState;
 }) {
   const store = useMemo(() => initializeStore(initialState), [initialState]);
   const persistor = getPersistor();

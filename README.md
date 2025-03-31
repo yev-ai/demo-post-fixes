@@ -42,6 +42,10 @@ I'm a performance fanatic and am learning a lot about NextJS. I've included the 
   - 168kB initial load
   - 91MB standalone artifact
   - 180MB docker image
+- [V6 template: V5 + Redux updates and SSR/PPR](https://github.com/yev-ai/demo-post-fixes/tree/starter-template-6)
+  - 161kB initial load
+  - 91MB standalone artifact
+  - 180MB docker image
 
 ## V5 Template Overview (Current)
 
@@ -53,16 +57,16 @@ I'm a performance fanatic and am learning a lot about NextJS. I've included the 
   - Many other things are 150%+ faster than Node
 - React 19
 - Redux 9.2
-  - Set up to persist language and theme preferences
-  - These are both done under "uiState" which we will use for:
-    - API connection to server for dynamic UI rendering updates
-    - Stream/WebSocket connection to server for LLMs via [RTK](https://redux-toolkit.js.org/rtk-query/overview)
+  - Set up to persist and SSR UI state (theme, language) preferences.
+    - This uses dynamic client/server imports and cookie storage.
 - ShadCN UI with:
   - TailwindCSS 4
   - Theme Switcher
   - Localization
     - This was done in Redux for practice but has good performance
 - NextJS 15.3 Canary with:
+  - <120ms LCP, 0 LCS, 110ms DOMContentLoaded, 112ms Load, 151ms Finish.
+    - Every UI component is now also [non-blocking and fully SSR'd](https://i.imgur.com/CsE7zAt.png)
   - Route configuration (next.config.ts) for:
     - `/api/*` - RESTful API endpoints
     - `/api/stream/*` - Server-Sent events

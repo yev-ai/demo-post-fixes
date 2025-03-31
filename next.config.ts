@@ -12,7 +12,7 @@ const nextConfig = {
   reactStrictMode: true,
   output: "standalone",
   experimental: {
-    // ppr: "incremental", // <- This will be useful later for streaming RSCs
+    ppr: "incremental",
     cssChunking: true,
     optimizeCss: true,
     optimizeServerReact: true,
@@ -25,7 +25,7 @@ const nextConfig = {
     parallelServerCompiles: !performAnalysis,
     parallelServerBuildTraces: !performAnalysis,
     taint: true,
-    optimizePackageImports: ["react", "@radix-ui/react-select"],
+    optimizePackageImports: [],
     useCache: true,
   },
   compress: true,
