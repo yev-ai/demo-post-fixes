@@ -12,12 +12,13 @@ import {
 } from "redux-persist";
 import { createCookieStorage } from "./storage/cookie";
 
-import localization from "@slices/localization";
+import localization, { localizationApi } from "@slices/localization";
 import uiState from "@slices/ui-state";
 
 type RootReducer = {
   localization: typeof localization;
   uiState: typeof uiState;
+  [localizationApi.reducerPath]: ReturnType<typeof localizationApi.reducer>;
 };
 
 export const makeStore = (preloadedState = {}) => {
@@ -29,6 +30,7 @@ export const makeStore = (preloadedState = {}) => {
     reducers = {
       localization,
       uiState,
+      [localizationApi.reducerPath]: localizationApi.reducer,
     };
   } else {
     const uiStatePersistConfig = {
@@ -43,6 +45,7 @@ export const makeStore = (preloadedState = {}) => {
         uiStatePersistConfig,
         uiState
       ) as unknown as typeof uiState,
+      [localizationApi.reducerPath]: localizationApi.reducer,
     };
   }
 
@@ -54,7 +57,7 @@ export const makeStore = (preloadedState = {}) => {
         serializableCheck: {
           ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
         },
-      }),
+      }).concat(localizationApi.middleware),
     preloadedState,
   });
 

@@ -28,14 +28,16 @@ export const getInitialState = async () => {
     };
   }
 
+  const translations = {
+    [uiState.language]: (
+      await import(`@/lib/localization/locales/${uiState.language}`)
+    )[uiState.language] as LocaleData,
+  };
+
   return {
     uiState,
     localization: {
-      translations: {
-        [uiState.language]: (
-          await import(`@/lib/localization/locales/${uiState.language}`)
-        )[uiState.language] as LocaleData,
-      },
+      translations,
       isLoading: false,
     },
   } as RootState;

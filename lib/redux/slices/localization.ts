@@ -3,6 +3,7 @@ import {
   createSlice,
   type PayloadAction,
 } from "@reduxjs/toolkit";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import type { LocaleCode, LocaleData, LocaleValue } from "@types";
 import type { RootState } from "../store";
@@ -93,5 +94,17 @@ export const getTranslation = (
 
   return result || defaultValue || key;
 };
+
+export const localizationApi = createApi({
+  reducerPath: "localizationApi",
+  baseQuery: fetchBaseQuery({ baseUrl: "/api" }),
+  endpoints: (builder) => ({
+    fetchTranslations: builder.query<LocaleData, LocaleCode>({
+      query: (locale) => `localization/${locale}`,
+    }),
+  }),
+});
+
+export const { useFetchTranslationsQuery } = localizationApi;
 
 export default localizationSlice.reducer;

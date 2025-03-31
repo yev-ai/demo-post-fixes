@@ -1,6 +1,7 @@
 "use client";
 
-import { useLocalization, useUiState } from "@hooks";
+import { useLocalization } from "@hooks";
+import { useUiState } from "@hooks";
 import {
   Select,
   SelectContent,
