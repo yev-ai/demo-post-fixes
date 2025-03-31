@@ -7,15 +7,13 @@ import {
 import type { LocaleCode, LocaleData, LocaleValue } from "@types";
 import type { RootState } from "../store";
 
-// import { en } from "@/lib/localization/locales/en";
-
 interface LocalizationState {
   translations: Record<LocaleCode, LocaleData>;
   isLoading: boolean;
 }
 
 const initialState: LocalizationState = {
-  translations: {} as Record<LocaleCode, LocaleData>, // would add the import here.
+  translations: {} as Record<LocaleCode, LocaleData>,
   isLoading: false,
 };
 

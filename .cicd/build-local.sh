@@ -2,7 +2,12 @@
 # Note - this is meant to be ran from package.json
 rm -rf bun.lock .next node_modules
 
-# TODO npm install results in a larger artifact but its so much slower we dont care for now
+# Adding the below to package.json and doing "npm install" instead of "bun install" saves us 16MB in Standalone Artifact Size
+#   "overrides": {
+#     "next-auth": {
+#       "next": "^15.3.0-canary.21"
+#     }
+#   },
 bun install
 bun run prisma:generate
 NEXT_TELEMETRY_DISABLED=1 NEXT_PRIVATE_STANDALONE=true NEXT_DISABLE_SOURCEMAPS=true bun --env-file .env.local --bun next build

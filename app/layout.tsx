@@ -1,6 +1,5 @@
 import { auth } from "@/lib/auth";
-import { en } from "@/lib/localization/locales/en";
-import { RootState } from "@types";
+import { getInitialState } from "@/lib/redux/initialState";
 import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
 
@@ -18,37 +17,17 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // const themeFromCookie =
-  //   (await cookies()).get("user-theme")?.value || "system";
-
   const session = await auth();
-
-  // We have to either set defaults or pull from cookie/auth here.
-  const initialState = {
-    uiState: {
-      theme: "light",
-      language: "en" as const,
-    },
-    localization: {
-      translations: {
-        en,
-      },
-      isLoading: false,
-    },
-  } as RootState;
+  const initialState = await getInitialState();
 
   return (
     <html
       lang={initialState.uiState.language}
       className={initialState.uiState.theme}
       style={{
-        // @ts-expect-error theme override.
-        "color-scheme": initialState.uiState.theme,
+        colorScheme: initialState.uiState.theme,
       }}
     >
-      <head>
-        <title>NextJS 15 Demo</title>
-      </head>
       <body>
         <SessionProvider session={session}>
           <ReduxProvider initialState={initialState}>

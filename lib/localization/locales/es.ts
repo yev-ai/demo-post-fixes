@@ -3,15 +3,15 @@ import { es as translationNames } from "../languages";
 
 export const es: LocaleData = {
   general: {
-    languageSwitchPending: "ES Ld",
+    languageSwitchPending: "Cargando",
   },
   translationNames,
   authButton: {
-    login: "ES Login",
-    logout: "ES Logout",
+    login: "Entrar",
+    logout: "Salir",
   },
   mainApp: {
-    welcome: "ES Welcome",
-    pleaseLogin: "ES Log in to use the app",
+    welcome: "Bienvenido",
+    pleaseLogin: "Inicia sesión para usar la aplicación",
   },
 };
