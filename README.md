@@ -43,8 +43,7 @@ I'm a performance fanatic and am learning a lot about NextJS. I've included the 
   - 91MB standalone artifact
   - 180MB docker image
 - [V6 template: V5 + Redux updates and SSR/PPR](https://github.com/yev-ai/demo-post-fixes/tree/starter-template-6)
-  - 161kB initial JS load but this is now [non-blocking because SSR/ISR/PPR](https://i.imgur.com/CsE7zAt.png):
-    - <120ms LCP, 0 LCS, 110ms DOMContentLoaded, 112ms Load, 151ms Finish.
+  - 161kB initial load
   - 91MB standalone artifact
   - 180MB docker image
 
@@ -66,6 +65,8 @@ I'm a performance fanatic and am learning a lot about NextJS. I've included the 
   - Localization
     - This was done in Redux for practice but has good performance
 - NextJS 15.3 Canary with:
+  - <120ms LCP, 0 LCS, 110ms DOMContentLoaded, 112ms Load, 151ms Finish.
+    - Every UI component is now also [non-blocking and fully SSR'd](https://i.imgur.com/CsE7zAt.png)
   - Route configuration (next.config.ts) for:
     - `/api/*` - RESTful API endpoints
     - `/api/stream/*` - Server-Sent events
